@@ -1,32 +1,50 @@
 #include <iostream>
+#include <vector>
+#include <map>
+
+#define ll long long
 
 using namespace std;
 
-int pw(int x, int exp, int mod) {
-    if (exp == 0) return 1;
-    int result = pw(x, exp/2, mod);
-    if (exp % 2 == 0)
-        return (1ll * result * result) % mod;
-    return ((1ll * result * result) % mod) * x;
+int pw(ll a, ll b, ll mod) {
+    if (b == 0) return 1;
+    int result = pw(a, b/2, mod);
+    if (b % 2 == 0) {
+        return (((1ll * result) * result) % mod);
+    }
+    return (((((1ll * result) * result) % mod) * a) % mod);
 }
 
 int main() {
-    unsigned int n, x, mod;
-    long long s = 0;
+    int n;
+    ll x, k;
+    vector<ll> a;
+    map<ll, ll> count;
 
-    mod = 1e9 + 7;
+    k = 0;
     cin >> n;
     cin >> x;
 
     for (int i = 0; i < n; i++) {
-        unsigned int el;
+        ll el;
         cin >> el;
-        s += pw(x, el, mod);
+        k += el;
+        a.push_back(el);
     }
-    long long exp = 0;
-    while (s % x == 0) {
-        s /= x;
-        exp++;
+
+    for(int i = 0; i < n; i++) {
+        if (count.find(k - a[i]) == count.end()) {
+            count[k - a[i]] = 0;
+        }
+        count[k - a[i]]++;
     }
-    cout << pw(x, exp, mod) << endl;
+
+    long long curr = k - a[n - 1];
+    while (count[curr] % x == 0) {
+        count[curr + 1] += count[curr] / x;
+        count[curr] = 0;
+        curr++;
+    }
+
+    cout << pw(x, curr, 1000000007) << '\n';
 }
