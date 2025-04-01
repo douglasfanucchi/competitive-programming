@@ -1,19 +1,18 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-int main() {
-	int arr[] = {-1, 2, 4, -3, 5, 2, -5, 2};
-	int size = sizeof(arr)/4;
-	int max = 0;
+long sub_array_with_max_sum(vector<int> arr) {
+    long result = arr[0];
 
-	for(int i = 0; i < size; i++) {
-		int sum = 0;
-		for(int j = i; j < size; j++) {
+	for(int i = 0; i < arr.size(); i++) {
+		long sum = 0;
+		for(int j = i; j < arr.size(); j++) {
 			sum += arr[j];
-			if (sum > max) max = sum;
+			if (sum > result) result = sum;
 		}
 	}
 
-	cout << max << endl;
+    return result;
 }
